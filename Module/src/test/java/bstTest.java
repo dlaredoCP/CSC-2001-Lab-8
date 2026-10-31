@@ -10,8 +10,15 @@ class bstTest {
         assertEquals(4, ex.right().value());
     }
 
+    //TODO: delete test
+
+    //TODO: deleteSimpleSwap test
+
+    //TODO: deleteHardSwap test
+
+
     @Test
-    void delete(){
+    void deleteLeaf(){
         bst <Integer> ex = new bst<Integer>(3,null, null);
         ex = bst.insert(ex,4);
         ex = bst.insert(ex,6);
@@ -19,12 +26,12 @@ class bstTest {
         ex = bst.insert(ex,7);
         ex = bst.insert(ex,2);
         ex = bst.insert(ex,5);
-        ex = bst.delete(ex,4);
-        assertEquals(6, ex.right().value());
+        ex = bst.deleteLeaf(ex,7);
+        assertEquals(null, ex.right().right().right());
     }
 
     @Test
-    void searchPath(){
+    void searchCheck(){
         bst <Integer> ex = new bst<Integer>(3,null, null);
         ex = bst.insert(ex,4);
         ex = bst.insert(ex,6);
@@ -32,7 +39,6 @@ class bstTest {
         ex = bst.insert(ex,7);
         ex = bst.insert(ex,2);
         ex = bst.insert(ex,5);
-        IO.println(ex.toString());
-        assertEquals("right", bst.searchPath(ex, 5).getValue());
+        assertEquals(1, bst.searchCheck(ex, 5));
     }
 }
