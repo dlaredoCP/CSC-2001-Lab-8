@@ -14,6 +14,7 @@ public record bst <T extends Comparable<T>>(T value, bst<T> left, bst<T> right){
         return tree;
     }
 
+    /** Accepts a binary search tree and a new value. If the given value is in the tree, it returns the binary search tree without it */
     public static <T extends Comparable<T>> bst<T> delete(bst<T> tree, T val){
         if (tree == null) {
             return null;
