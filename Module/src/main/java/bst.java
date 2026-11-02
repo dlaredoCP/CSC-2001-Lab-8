@@ -15,58 +15,45 @@ public record bst <T extends Comparable<T>>(T value, bst<T> left, bst<T> right){
     }
 
     public static <T extends Comparable<T>> bst<T> delete(bst<T> tree, T val){
-        switch (searchCheck(tree, val)){
-            case 1:
-                return deleteLeaf(tree, val);
-            case 0:
-
-            case -1:
-        }
-        return null;
-    }
-
-    /** Accepts a bst and a value (a leaf that needs to be deleted) and returns the bst without that leaf */
-    public static <T extends Comparable<T>> bst<T> deleteLeaf(bst<T> tree, T val){
-        if (tree==null){
-            return null;
-        } else
-        if (tree.value.compareTo(val)<0){
-            return new bst<>(tree.value, tree.left, deleteLeaf(tree.right, val));
-        } else
-        if (tree.value.compareTo(val)>0){
-            return new bst<>(tree.value, deleteLeaf(tree.left, val), tree.right);
-        } else
-        if (tree.value.compareTo(val)==0){
+        if (tree == null) {
             return null;
         }
-        return tree;
+        int cmp = val.compareTo(tree.value());
+        if (cmp < 0) {
+            return new bst<>(tree.value(), delete(tree.left(), val), tree.right());
+        }
+        if (cmp > 0) {
+            return new bst<>(tree.value(), tree.left(), delete(tree.right(), val));
+        }
+        if (tree.left() == null) {
+            return tree.right();
+        }
+        if (tree.right() == null) {
+            return tree.left();
+        }
+        bst<T> successor = tree.right();
+        while (successor.left() != null) {
+            successor = successor.left();
+        }
+        return new bst<>(successor.value(), tree.left(), delete(tree.right(), successor.value())
+        );
     }
 
-    /** Accepts a bst and a value (a value with only one child) and returns the bst without that value, swapping the parent with its child */
-    public static <T extends Comparable<T>> bst<T> deleteSimpleSwap(bst<T> tree, T val){
-        //TODO write this code
-    }
-
-    public static <T extends Comparable<T>> int searchCheck(bst<T> tree, T val){
+    /** Accepts a bst and a value, and returns true if the value exists within the bst, false otherwise */
+    public static <T extends Comparable<T>> boolean search(bst<T> tree, T val){
         switch (tree){
             case null:
-                return 0;
+                return false;
             case bst(T v, bst<T> l, bst<T> r):
                 if (v.compareTo(val)<0){
-                    return searchCheck(r, val);
+                    return search(r, val);
                 } else
                 if (v.compareTo(val)>0){
-                    return searchCheck(l, val);
+                    return search(l, val);
                 } else{
-                    if (l==null && r==null){
-                        return 1;
-                    }
-                    if (l==null || r==null){
-                        return 0;
-                    } else {
-                        return -1;
-                    }
+                    return true;
                 }
         }
     }
+
 }
