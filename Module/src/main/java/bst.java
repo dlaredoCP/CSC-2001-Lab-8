@@ -4,14 +4,15 @@ public record bst <T extends Comparable<T>>(T value, bst<T> left, bst<T> right){
     public static <T extends Comparable<T>> bst<T> insert(bst<T> tree, T newVal){
         if (tree==null){
             return new bst<>(newVal, null, null);
-        } else
-        if (tree.value.compareTo(newVal)==-1 || tree.value.compareTo(newVal)==0){
-            return new bst<>(tree.value, tree.left, insert(tree.right, newVal));
-        } else
-        if (tree.value.compareTo(newVal)==1){
-            return new bst<>(tree.value, insert(tree.left, newVal), tree.right);
+        } else {
+            int cmp = tree.value.compareTo(newVal);
+            if (cmp < 0 || tree.value.compareTo(newVal) == 0) {
+                return new bst<>(tree.value, tree.left, insert(tree.right, newVal));
+            } else if (cmp > 0) {
+                return new bst<>(tree.value, insert(tree.left, newVal), tree.right);
+            }
+            return tree;
         }
-        return tree;
     }
 
     /** Accepts a binary search tree and a new value. If the given value is in the tree, it returns the binary search tree without it */
@@ -36,8 +37,7 @@ public record bst <T extends Comparable<T>>(T value, bst<T> left, bst<T> right){
         while (successor.left() != null) {
             successor = successor.left();
         }
-        return new bst<>(successor.value(), tree.left(), delete(tree.right(), successor.value())
-        );
+        return new bst<>(successor.value(), tree.left(), delete(tree.right(), successor.value()));
     }
 
     /** Accepts a bst and a value, and returns true if the value exists within the bst, false otherwise */
